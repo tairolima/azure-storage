@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "tairolima/azure-storage",
   "description": "Azure Storage e Queue com PHP 8.x",
   "authors": [

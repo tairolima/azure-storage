@@ -40,8 +40,6 @@ class AzureStorageAdapter
         {
             $this->alterarCamadaDeAcesso($container, $blob, $accessTier);
         }
-
-        fclose($arquivo);
     }
 
     public function adicionarPasta(string $container, string $blob, string $uriPasta): void

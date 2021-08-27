@@ -10,22 +10,20 @@ use MicrosoftAzure\Storage\Queue\QueueRestProxy;
 
 class AzureQueueAdapter
 {
-    private string $mFila;
     private QueueRestProxy $mQueueProxy;
     private ListMessagesOptions $mOptions;
 
-    public function __construct(string $fila, string $connectionString)
+    public function __construct(string $connectionString)
     {
-        $this->mFila       = $fila;
         $this->mQueueProxy = QueueRestProxy::createQueueService($connectionString);
         $this->mOptions    = new ListMessagesOptions();
     }
 
-    public function getAll(int $numeroDeMenssagens = 1): array
+    public function getAll(string $fila, int $numeroDeMenssagens = 1): array
     {
         $this->mOptions->setNumberOfMessages($numeroDeMenssagens);
 
-        $filaTemp = $this->mQueueProxy->listMessages($this->mFila, $this->mOptions);
+        $filaTemp = $this->mQueueProxy->listMessages($fila, $this->mOptions);
 
         $retorno = [];
         foreach ($filaTemp->getQueueMessages() as $value)
@@ -42,19 +40,19 @@ class AzureQueueAdapter
         return $retorno;
     }
 
-    public function adicionar(array $mensagem): void
+    public function adicionar(string $fila, array $mensagem): void
     {
-        $this->mQueueProxy->createMessage($this->mFila, json_encode($mensagem, true) ?? "");
+        $this->mQueueProxy->createMessage($fila, json_encode($mensagem, true) ?? "");
     }
 
-    public function excluir(string $mensagemId, string $popReceipt): void
+    public function excluir(string $fila, string $mensagemId, string $popReceipt): void
     {
-        $this->mQueueProxy->deleteMessage($this->mFila, $mensagemId, $popReceipt);
+        $this->mQueueProxy->deleteMessage($fila, $mensagemId, $popReceipt);
     }
 
-    public function totalMensagens(): int
+    public function totalMensagens(string $fila): int
     {
-        $fila = $this->mQueueProxy->getQueueMetadata($this->mFila);
+        $fila = $this->mQueueProxy->getQueueMetadata($fila);
         return $fila->getApproximateMessageCount();
     }
 
