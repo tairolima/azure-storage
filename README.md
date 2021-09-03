@@ -2,4 +2,4 @@
 
 Azure Storage Adapter (Blob e Queue)
 
-Versão: 1.0.1
+Versão: 1.0.2
